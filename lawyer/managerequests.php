@@ -55,7 +55,7 @@
                         <th>Accept / Reject</th> -->
                     </tr>
                     <?php
-                    require_once "includes/db.php";
+                    include "includes/db.php";
                     if ($con) {
                         $x = 1;
                         // $stmt = $con->prepare("SELECT notif_id, client_id, case_type, case_detail FROM notifications WHERE lawyer_id = ? AND accepted_status = 'not yet accepted'");

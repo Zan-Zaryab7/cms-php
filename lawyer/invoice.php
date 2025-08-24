@@ -44,7 +44,7 @@
         <div class="col-sm-10">
             <h1>Invoice Layout</h1>
             <?php
-            require_once "includes/db.php";
+            include "includes/db.php";
 
             if ($con) {
                 if (isset($_POST['invoice_submit'])) {

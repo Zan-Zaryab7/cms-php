@@ -1,6 +1,6 @@
 <?php
-require_once "includes/db.php";
-require_once "includes/sessions.php";
+include "includes/db.php";
+include "includes/sessions.php";
 
 if (isset($_POST["admin-login"])) {
     $email = trim($_POST["admin-email"]);

@@ -41,7 +41,7 @@
 
         <div class="col-sm-10" style="font-weight: bold; padding-bottom: 30px;">
             <?php
-            require_once("includes/db.php");
+            include("includes/db.php");
             if ($con) {
                 $cid = (int) ($_SESSION['client_id'] ?? 0);
                 $stmt = $con->prepare("

@@ -1,6 +1,6 @@
 <?php
-require_once("includes/sessions.php");
-require_once("includes/functions.php");
+include("includes/sessions.php");
+include("includes/functions.php");
 confirm_client_login();
 ?>
 <!DOCTYPE html>
@@ -39,25 +39,25 @@ confirm_client_login();
 
         switch ($page) {
             case "addcase":
-                require_once("client/addcase.php");
+                include("client/addcase.php");
                 break;
             case "sendfeedback":
-                require_once("client/sendfeedback.php");
+                include("client/sendfeedback.php");
                 break;
             case "currentcase":
-                require_once("client/currentcase.php");
+                include("client/currentcase.php");
                 break;
             case "notifications":
-                require_once("client/notifications.php");
+                include("client/notifications.php");
                 break;
             case "updateinfo":
-                require_once("client/updateinfo.php");
+                include("client/updateinfo.php");
                 break;
             case "addtocase":
-                require_once("client/addtocase.php");
+                include("client/addtocase.php");
                 break;
             default:
-                require_once("client/clientprofile.php");
+                include("client/clientprofile.php");
                 break;
         }
         ?>

@@ -13,7 +13,7 @@
 
         <?php if (isset($_GET['id']) && ctype_digit($_GET['id'])): ?>
             <?php
-            require_once("includes/db.php");
+            include("includes/db.php");
             $case_id = (int) $_GET['id'];
             $c_type = $c_details = $next_hearing = $prev_hearing = $c_status = $c_name = "";
 
@@ -78,7 +78,7 @@
 
 <?php
 if (isset($_POST['update-case']) && isset($_GET['id']) && ctype_digit($_GET['id'])) {
-    require_once("includes/db.php");
+    include("includes/db.php");
 
     $case_id = (int) $_GET['id'];
     $case_type = trim($_POST['case-type']);

@@ -1,5 +1,5 @@
 <?php
-require_once "includes/sessions.php";
+include "includes/sessions.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +23,7 @@ require_once "includes/sessions.php";
         $email = trim($_POST["client-email"]);
         $password = $_POST["client-password"];
 
-        require_once "includes/db.php";
+        include "includes/db.php";
 
         if ($con) {
             $stmt = $con->prepare("SELECT client_id, client_first_name, client_password 

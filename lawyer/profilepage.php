@@ -1,6 +1,6 @@
 <?php
-require_once "includes/sessions.php";
-require_once "includes/db.php";
+include "includes/sessions.php";
+include "includes/db.php";
 
 // Fetch lawyer info
 $stmt = $con->prepare("SELECT lawyer_first_name, lawyer_last_name, lawyer_email, lawyer_phone_no, lawyer_city, lawyer_address, lawyer_rating, specialization, image_type 
@@ -12,7 +12,7 @@ $stmt->bind_result($fname, $lname, $email, $phone, $city, $address, $rating, $sp
 $stmt->fetch();
 
 // Handle image upload
-require_once "includes/dbpdo.php";
+include "includes/dbpdo.php";
 if (isset($_POST['img-submit']) && is_uploaded_file($_FILES['up-image']['tmp_name'])) {
     $img_data = file_get_contents($_FILES['up-image']['tmp_name']);
     $img_type = $_FILES['up-image']['type'];

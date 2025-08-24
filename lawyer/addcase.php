@@ -1,5 +1,5 @@
 <?php
-require_once "includes/db.php";
+include "includes/db.php";
 
 if (!isset($_SESSION["lawyer_id"], $_GET['id'], $_GET['case_id'], $_GET['status'])) {
 	header("Location: lawyer_dashboard.php");

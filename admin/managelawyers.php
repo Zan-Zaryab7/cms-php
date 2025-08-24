@@ -31,7 +31,7 @@
                     </thead>
                     <tbody>
                         <?php
-                        require_once("includes/db.php");
+                        include("includes/db.php");
 
                         if ($con) {
                             $x = 1;

@@ -7,7 +7,7 @@ if (isset($_POST["admin-signup"])) {
     $email = trim($_POST["admin-email"]);
     $password = $_POST["admin-password"];
 
-    require_once("includes/db.php");
+    include("includes/db.php");
 
     if ($con) {
         // Check if email already exists

@@ -1,6 +1,6 @@
 <?php
-require_once("includes/sessions.php");
-require_once("includes/functions.php");
+include("includes/sessions.php");
+include("includes/functions.php");
 confirm_admin_login();
 ?>
 <!DOCTYPE html>
@@ -35,22 +35,22 @@ confirm_admin_login();
         $page = $_GET['q'] ?? null;
         switch ($page) {
             case "finishedcases":
-                require_once("admin/finishedcases.php");
+                include("admin/finishedcases.php");
                 break;
             case "managelawyers":
-                require_once("admin/managelawyers.php");
+                include("admin/managelawyers.php");
                 break;
             case "feedbacks":
-                require_once("admin/feedbacks.php");
+                include("admin/feedbacks.php");
                 break;
             case "updatecase":
-                require_once("admin/updatecase.php");
+                include("admin/updatecase.php");
                 break;
             case "removefeedback":
-                require_once("admin/removefeedback.php");
+                include("admin/removefeedback.php");
                 break;
             default:
-                require_once("admin/currentcases.php");
+                include("admin/currentcases.php");
                 break;
         }
         ?>

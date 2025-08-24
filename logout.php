@@ -1,5 +1,5 @@
 <?php
-require_once "includes/sessions.php";
+include "includes/sessions.php";
 
 if (isset($_SESSION["admin_id"])) {
     unset($_SESSION["admin_id"], $_SESSION["admin_name"]);

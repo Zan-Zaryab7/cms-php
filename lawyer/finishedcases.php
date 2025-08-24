@@ -53,7 +53,7 @@
                         <th>Court Appointed</th>
                     </tr>
                     <?php
-                    require_once "includes/db.php";
+                    include "includes/db.php";
 
                     if ($con) {
                         $x = 1;

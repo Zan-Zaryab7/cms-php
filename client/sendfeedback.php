@@ -1,6 +1,6 @@
 <?php
-require_once("includes/session.php");
-require_once("includes/db.php");
+include("includes/session.php");
+include("includes/db.php");
 
 if (isset($_POST["feedback"])) {
     $name = trim($_POST["name"]);

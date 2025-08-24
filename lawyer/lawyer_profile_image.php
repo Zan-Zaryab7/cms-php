@@ -1,5 +1,5 @@
 <?php
-require_once "../includes/dbpdo.php";
+include "../includes/dbpdo.php";
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     http_response_code(400);

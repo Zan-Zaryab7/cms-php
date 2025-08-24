@@ -17,7 +17,7 @@
 
         <?php if (isset($_GET['id']) && ctype_digit($_GET['id'])): ?>
             <?php
-            require_once("includes/db.php");
+            include("includes/db.php");
             $feedback_id = (int) $_GET['id'];
             $uname = "";
 

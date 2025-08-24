@@ -22,7 +22,7 @@
         $email = trim($_POST["client-email"]);
         $password = $_POST["client-password"];
 
-        require_once("includes/db.php");
+        include("includes/db.php");
 
         if ($con) {
             // Check if email already exists

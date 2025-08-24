@@ -51,7 +51,7 @@
                         <th>Lawyer Status</th>
                     </tr>
                     <?php
-                    require_once("includes/db.php");
+                    include("includes/db.php");
                     $con;
                     if ($con) {
                         $cid = (int) $_SESSION['client_id']; // ensure integer

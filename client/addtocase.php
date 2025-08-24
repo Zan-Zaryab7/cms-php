@@ -1,6 +1,6 @@
 <?php
 if (isset($_POST["addcase"])) {
-    require_once("includes/db.php");
+    include("includes/db.php");
 
     if ($con) {
         $casetype = trim($_POST["ctype"]);

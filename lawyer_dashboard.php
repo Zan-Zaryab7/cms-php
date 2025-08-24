@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once __DIR__ . "/includes/sessions.php";
-require_once __DIR__ . "/includes/functions.php";
+include __DIR__ . "/includes/sessions.php";
+include __DIR__ . "/includes/functions.php";
 confirm_lawyer_login();
 ?>
 <!DOCTYPE html>

@@ -22,7 +22,7 @@
                 <div class="row" style="background-color: white;">
 
                     <?php
-                    require_once("includes/db.php");
+                    include("includes/db.php");
                     if ($con) {
                         $stmt = $con->prepare("
                             SELECT lawyer_id, lawyer_first_name, lawyer_last_name, lawyer_email

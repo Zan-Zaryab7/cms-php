@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["client-signup"])) {
             <div class="alert alert-danger text-center"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
 
-        <form action="client_signup.php" method="post" style="border:1px solid #ccc">
+        <form action="client_signup.php" method="post" style="border:1px solid #ccc; padding: 8px;">
             <h1>Client Sign Up</h1>
             <p>Please fill in this form to create an account.</p>
             <hr>

@@ -1,8 +1,8 @@
 <?php
 
-$user = 'root';
-$pwd = '';
-$dsn = 'mysql:host=localhost;dbname=court_case_management;charset=utf8mb4';
+$user = 'b5439b0d74ba8000c36482779958';
+$pwd = '068ab543-9b0d-7670-8000-efa09b407e03';
+$dsn = 'mysql:host=db.fr-pari1.bengt.wasmernet.com;dbname=court_management_system;charset=utf8mb4';
 
 $options = [
     PDO::ATTR_EMULATE_PREPARES => false, // use native prepared statements

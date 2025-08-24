@@ -1,5 +1,35 @@
 <?php
 include "includes/sessions.php";
+include "includes/dbpdo.php"; // ✅ use PDO for consistency
+
+$error = "";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["client-login"])) {
+    $email = trim($_POST["client-email"]);
+    $password = $_POST["client-password"];
+
+    try {
+        $stmt = $conpdo->prepare("SELECT client_id, client_first_name, client_password 
+                                  FROM client WHERE client_email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+
+        if (!$user) {
+            $error = "Email not found.";
+        } elseif (!password_verify($password, $user["client_password"])) {
+            $error = "Invalid password.";
+        } else {
+            // ✅ Success → set session and redirect before HTML is sent
+            $_SESSION['client_id'] = $user["client_id"];
+            $_SESSION['client_name'] = $user["client_first_name"];
+            header("Location: client_dashboard.php");
+            exit();
+        }
+    } catch (PDOException $e) {
+        error_log("Login error: " . $e->getMessage());
+        $error = "Server problem. Please try again later.";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,55 +37,19 @@ include "includes/sessions.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Client Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="public/css/login.css">
     <link rel="icon" href="public/images/statue.jpg" type="image/x-icon">
 </head>
 
 <body>
-
-    <?php
-    if (isset($_POST["client-login"])) {
-        $email = trim($_POST["client-email"]);
-        $password = $_POST["client-password"];
-
-        include "includes/db.php";
-
-        if ($con) {
-            $stmt = $con->prepare("SELECT client_id, client_first_name, client_password 
-                               FROM client WHERE client_email = ?");
-            $stmt->bind_param("s", $email);
-            $stmt->execute();
-            $stmt->store_result();
-
-            if ($stmt->num_rows === 0) {
-                echo "<div class='alert alert-danger text-center'>Email not found.</div>";
-            } else {
-                $stmt->bind_result($client_id, $client_name, $db_pwd);
-                $stmt->fetch();
-
-                if (!password_verify($password, $db_pwd)) {
-                    echo "<div class='alert alert-danger text-center'>Invalid password.</div>";
-                } else {
-                    $_SESSION['client_id'] = $client_id;
-                    $_SESSION['client_name'] = $client_name;
-                    header("Location: client_dashboard.php");
-                    exit();
-                }
-            }
-            $stmt->close();
-        } else {
-            echo "<div class='alert alert-danger text-center'>Server problem. Please try again later.</div>";
-        }
-    }
-    ?>
-
-    <!-- client login form -->
     <div class="container">
+        <?php if (!empty($error)): ?>
+            <div class="alert alert-danger text-center"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+
         <form action="client_login.php" method="post">
             <div class="imgcontainer">
                 <img src="public/images/user.png" alt="Avatar" class="avatar">
@@ -92,7 +86,6 @@ include "includes/sessions.php";
             x.type = (x.type === "password") ? "text" : "password";
         }
     </script>
-
 </body>
 
 </html>

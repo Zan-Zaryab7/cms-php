@@ -1,51 +1,43 @@
 <?php
 
-    function check_admin_login(){
-        if(isset($_SESSION["admin_id"])){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
+// Admin
+function check_admin_login(): bool
+{
+    return isset($_SESSION["admin_id"]);
+}
 
-
-    function confirm_admin_login(){
-        if(check_admin_login()==false){
-            Header("Location: admin_login.php");
-        }
+function confirm_admin_login(): void
+{
+    if (!check_admin_login()) {
+        header("Location: admin_login.php");
+        exit;
     }
+}
 
-    function check_client_login(){
-        if(isset($_SESSION["client_id"])){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
+// Client
+function check_client_login(): bool
+{
+    return isset($_SESSION["client_id"]);
+}
 
-    function confirm_client_login(){
-        if(check_client_login()==false){
-            Header("Location: client_login.php");
-        }
+function confirm_client_login(): void
+{
+    if (!check_client_login()) {
+        header("Location: client_login.php");
+        exit;
     }
+}
 
-    //Lawyer
-    function check_lawyer_login()
-    {
-     if (isset($_SESSION["lawyer_id"])) {
-      return true;
-     } else {
-      return false;
-     }
-    }
+// Lawyer
+function check_lawyer_login(): bool
+{
+    return isset($_SESSION["lawyer_id"]);
+}
 
-    function confirm_lawyer_login()
-    {
-     if (check_lawyer_login() == false) {
-      echo "Login Required";
-      header("Location: admin_login.php");
-     }
+function confirm_lawyer_login(): void
+{
+    if (!check_lawyer_login()) {
+        header("Location: lawyer_login.php");
+        exit;
     }
- ?>
+}

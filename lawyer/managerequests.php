@@ -47,58 +47,60 @@
                 <table class="table table-striped table-hover">
                     <tr>
                         <th>Sr. no</th>
-                        <th>Client Name</th>
+                        <th>Lawyer</th>
+                        <th>Notification</th>
+                        <!-- <th>Client Name</th>
                         <th>Case Type</th>
                         <th>Case Details</th>
-                        <th>Accept / Reject</th>
+                        <th>Accept / Reject</th> -->
                     </tr>
                     <?php
-require_once "includes/db.php";
-$con;
-if ($con) {
-	$x = 1;
-	$stmt = $con->prepare("SELECT notif_id, client_id, case_type, case_detail FROM notifications WHERE lawyer_id = ? AND accepted_status = 'not yet accepted'");
-	$id = (int) $_SESSION['lawyer_id'];
-	$stmt->bind_param('i', $id);
-	$stmt->execute();
-	$stmt->store_result();
-	$stmt->bind_result($notif_id, $client_id, $case_type, $case_detail);
+                    require_once "includes/db.php";
+                    if ($con) {
+                        $x = 1;
+                        // $stmt = $con->prepare("SELECT notif_id, client_id, case_type, case_detail FROM notifications WHERE lawyer_id = ? AND accepted_status = 'not yet accepted'");
+                        $stmt = $con->prepare("SELECT lawyer_id, notification FROM lawyer_notifications WHERE lawyer_id = ?");
+                        $id = (int) $_SESSION['lawyer_id'];
+                        $stmt->bind_param('i', $id);
+                        $stmt->execute();
+                        $stmt->store_result();
+                        $stmt->bind_result($lawyer_id, $notification);
+                        // $stmt->bind_result($notif_id, $client_id, $case_type, $case_detail);
+                    
+                        while ($stmt->fetch()) {
 
-	while ($stmt->fetch()) {
-
-		$stmt1 = $con->prepare("SELECT client_first_name, client_last_name from client where client_id = ?");
-		$stmt1->bind_param('i', $client_id);
-		$stmt1->execute();
-		$stmt1->store_result();
-		$stmt1->bind_result($c_fname, $c_lname);
-		$stmt1->fetch();
-
-		$stmt2 = $con->prepare("SELECT case_id from cases WHERE lawyer_id_assigned = ? AND clientforcase_id = ? AND case_type = ? AND case_details = ?");
-		$stmt2->bind_param("ssss", $id, $client_id, $case_type, $case_detail);
-		$stmt2->execute();
-		$stmt2->store_result();
-		$stmt2->bind_result($case_id);
-		$stmt2->fetch();
-
-		echo "<tr>
-                <td> {$x} </td>
-                <td> {$c_fname} {$c_lname}</td>
-                <td> {$case_type} </td>
-                <td> {$case_detail} </td>
+                            // $stmt1 = $con->prepare("SELECT client_first_name, client_last_name from client where client_id = ?");
+                            // $stmt1->bind_param('i', $client_id);
+                            // $stmt1->execute();
+                            // $stmt1->store_result();
+                            // $stmt1->bind_result($c_fname, $c_lname);
+                            // $stmt1->fetch();
+                    
+                            // $stmt2 = $con->prepare("SELECT case_id from cases WHERE lawyer_id_assigned = ? AND clientforcase_id = ? AND case_type = ? AND case_details = ?");
+                            // $stmt2->bind_param("ssss", $id, $client_id, $case_type, $case_detail);
+                            // $stmt2->execute();
+                            // $stmt2->store_result();
+                            // $stmt2->bind_result($case_id);
+                            // $stmt2->fetch();
+                    
+                            echo "<tr>
+                <td>{$x}</td>
+                <td>{$lawyer_id}</td>
+                <td>{$notification}</td>
+                <!-- <td>{$c_fname} {$c_lname}</td>
+                <td>{$case_type}</td>
+                <td>{$case_detail}</td>
                 <td>
-                <a class='btn btn-success' href='lawyer_dashboard.php?q=addcase&id={$client_id}&status=accepted&case_id={$case_id}'>
-                    Accept
-                </a>
-                <a class='btn btn-danger' href='lawyer_dashboard.php?q=addcase&id={$client_id}&status=rejected&case_id={$case_id}'> Reject
-                </a>
-                </td>
+                    <a class='btn btn-success' href='lawyer_dashboard.php?q=addcase&id={$client_id}&status=accepted&case_id={$case_id}'>Accept</a>
+                    <a class='btn btn-danger' href='lawyer_dashboard.php?q=addcase&id={$client_id}&status=rejected&case_id={$case_id}'>Reject</a>
+                </td> -->
             </tr>";
-		$x++;
-	}
-} else {
-	echo "Server Prob";
-}
-?>
+                            $x++;
+                        }
+                    } else {
+                        echo "<tr><td colspan='3'>Server Problem</td></tr>";
+                    }
+                    ?>
                 </table>
             </div>
         </div>

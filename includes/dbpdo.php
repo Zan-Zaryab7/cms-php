@@ -3,15 +3,16 @@
 $user = 'root';
 $pwd = '';
 $dsn = 'mysql:host=localhost;dbname=court_case_management;charset=utf8mb4';
+
 $options = [
- PDO::ATTR_EMULATE_PREPARES => false, // turn off emulation mode for "real" prepared statements
- PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exceptions
- PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //make the default fetch be an associative array
+    PDO::ATTR_EMULATE_PREPARES => false, // use native prepared statements
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // throw exceptions on errors
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, // fetch associative arrays by default
 ];
 
 try {
- $conpdo = new PDO($dsn, $user, $pwd, $options);
-} catch (Exception $e) {
- error_log($e->getMessage());
- exit('Error establishing connection using PDO');
+    $conpdo = new PDO($dsn, $user, $pwd, $options);
+} catch (PDOException $e) {
+    error_log("PDO Connection error: " . $e->getMessage());
+    exit('Database connection failed.');
 }

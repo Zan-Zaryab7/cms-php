@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-sm-2">
             <h1>
-                <?php echo $_SESSION["client_name"]; ?>
+                <?php echo htmlspecialchars($_SESSION["client_name"] ?? ""); ?>
             </h1>
             <br>
             <ul id="side_menu" class="nav nav-pills nav-stacked">
@@ -10,7 +10,7 @@
                     <a href="client_dashboard.php">
                         <span class="glyphicon glyphicon-user"></span>
                         &nbsp; Profile
-                     </a>
+                    </a>
                 </li>
                 <li class="">
                     <a href="client_dashboard.php?q=addcase">
@@ -37,7 +37,7 @@
                     </a>
                 </li>
             </ul>
-        </div>   <!--div ending of vertical nav -->
+        </div> <!--div ending of vertical nav -->
 
         <div class="col-sm-10" style="font-weight: bold; padding-bottom: 30px;">
             <div class="table-responsive">
@@ -50,45 +50,46 @@
                         <th>Case Status</th>
                         <th>Lawyer Status</th>
                     </tr>
-                        <?php
-                            require_once("includes/db.php");
-                            $con;
-                            if ($con) {
-                                $cid = $_SESSION['client_id'];
-                                $stmt = $con->prepare("
+                    <?php
+                    require_once("includes/db.php");
+                    $con;
+                    if ($con) {
+                        $cid = (int) $_SESSION['client_id']; // ensure integer
+                        $stmt = $con->prepare("
                                 SELECT case_type, case_details, next_hearing_date,
-                                case_status, lawyer_status
-                                FROM cases WHERE clientforcase_id = ?");
-                                $stmt->bind_param('s', $cid);
-                                $stmt->execute();
-                                $stmt->store_result();
-                                $stmt->bind_result($case_type, $case_details,
-                                $next_hearing_date, $case_status, $lawyer_status);
-$x=1;		
+                                       case_status, lawyer_status
+                                FROM cases 
+                                WHERE clientforcase_id = ?
+                            ");
+                        $stmt->bind_param('i', $cid);
+                        $stmt->execute();
+                        $stmt->store_result();
+                        $stmt->bind_result($case_type, $case_details, $next_hearing_date, $case_status, $lawyer_status);
+                        $x = 1;
 
-                                while ($stmt->fetch()) {
-                                    
-                                    if(!$next_hearing_date)
-                                        $next_hearing_date = "not yet decided";
-                                    echo "
+                        while ($stmt->fetch()) {
+                            if (!$next_hearing_date) {
+                                $next_hearing_date = "not yet decided";
+                            }
+                            echo "
                                     <tr>
-                                        <td> {$x} </td>
-                                        <td> {$case_type} </td>
-                                        <td> {$case_details} </td>
-                                        <td> {$next_hearing_date} </td>
-                                        <td> {$case_status} </td>
-                                        <td> {$lawyer_status} </td>
+                                        <td>{$x}</td>
+                                        <td>" . htmlspecialchars($case_type) . "</td>
+                                        <td>" . htmlspecialchars($case_details) . "</td>
+                                        <td>" . htmlspecialchars($next_hearing_date) . "</td>
+                                        <td>" . htmlspecialchars($case_status) . "</td>
+                                        <td>" . htmlspecialchars($lawyer_status) . "</td>
                                     </tr>
-                                    ";
-                                    $x++;
-                                }
-                            }
-                            else{
-                                echo "Server Prob";
-                            }
-                        ?>
+                                ";
+                            $x++;
+                        }
+                        $stmt->close();
+                    } else {
+                        echo "<tr><td colspan='6'>Server Problem</td></tr>";
+                    }
+                    ?>
                 </table>
             </div>
         </div>
-   </div>
+    </div>
 </div>

@@ -53,35 +53,42 @@
                         <th>Court Appointed</th>
                     </tr>
                     <?php
-require_once "includes/db.php";
-$con;
-if ($con) {
-	$x = 1;
-	$stmt = $con->prepare("SELECT case_type, case_details, court_name FROM cases WHERE case_status = ? AND lawyer_id_assigned = ?");
-	$status = "finished";
-	$id = (int) $_SESSION['lawyer_id'];
-	$stmt->bind_param('si', $status, $id);
-	$stmt->execute();
-	$stmt->store_result();
-	$stmt->bind_result($case_type,
-		$case_details, $court_name);
+                    require_once "includes/db.php";
 
-	while ($stmt->fetch()) {
-		echo "
+                    if ($con) {
+                        $x = 1;
+                        $stmt = $con->prepare("SELECT case_type, case_details, court_name 
+                                               FROM cases 
+                                               WHERE case_status = ? AND lawyer_id_assigned = ?");
+                        $status = "finished";
+                        $id = (int) $_SESSION['lawyer_id'];
+                        $stmt->bind_param('si', $status, $id);
+                        $stmt->execute();
+                        $stmt->store_result();
+                        $stmt->bind_result($case_type, $case_details, $court_name);
+
+                        if ($stmt->num_rows > 0) {
+                            while ($stmt->fetch()) {
+                                echo "
                                     <tr>
-                                        <td> {$x} </td>
-                                        <td> {$case_type} </td>
-                                        <td> {$case_details} </td>
-                                        <td> Finished </td>
-                                        <td> {$court_name} </td>
-                                    </tr>
-                                    ";
-		$x++;
-	}
-} else {
-	echo "Server Prob";
-}
-?>
+                                        <td>{$x}</td>
+                                        <td>{$case_type}</td>
+                                        <td>{$case_details}</td>
+                                        <td>Finished</td>
+                                        <td>{$court_name}</td>
+                                    </tr>";
+                                $x++;
+                            }
+                        } else {
+                            echo "
+                                <tr>
+                                    <td colspan='5' class='text-center'>No finished cases found.</td>
+                                </tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='5'>Server Problem</td></tr>";
+                    }
+                    ?>
                 </table>
             </div>
         </div>

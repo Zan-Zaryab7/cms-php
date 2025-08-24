@@ -44,48 +44,54 @@
         <div class="col-sm-10">
             <h1>Invoice Layout</h1>
             <?php
-require_once "includes/db.php";
-$con;
-if ($con) {
-	if (isset($_POST['invoice_submit'])) {
-		$stmt = $con->prepare("INSERT INTO invoice (lawyer_id, retainer, hearing, consulting) VALUES (?,?,?,?)");
-		$stmt->bind_param("iiii", $_SESSION['lawyer_id'], $_POST['retainer'], $_POST['hearing'], $_POST['consult']);
-		$stmt->execute();
-	}
-	$stmt = $con->prepare("SELECT invoice_id from invoice WHERE lawyer_id = ?");
-	$id = (int) $_SESSION['lawyer_id'];
-	$stmt->bind_param('i', $id);
-	$stmt->execute();
-	$stmt->store_result();
-    $numRows = $stmt->num_rows;
-	$stmt->bind_result($invoice_id);
-	if ($numRows == 0) {
-		echo '    <p>Please fill in details for your invoice layout</p>
+            require_once "includes/db.php";
 
-            <form action="" method="post">
-                <input type="text" placeholder="Retainer Fees" name="retainer">
-                <input type="text" placeholder="Per Hearing Fees" name="hearing">
-                <input type="text" placeholder="Consulting Fees" name="consult">
-                <input type="submit" name="invoice_submit">
-            </form>';
-	} else {
-		$stmt = $con->prepare("SELECT retainer, hearing, consulting from invoice where lawyer_id = ?");
-		$stmt->bind_param('i', $_SESSION['lawyer_id']);
-		$stmt->execute();
-		$stmt->store_result();
-		$stmt->bind_result($retainer, $hearing, $consulting);
-		$stmt->fetch();
-		echo "
-            <p class='invoice_info'>Retainer Fees: {$retainer} </p>
-            <p class='invoice_info'>Per Hearing Fees: {$hearing} </p>
-            <p class='invoice_info'>Consulting Fees: {$consulting} </p>
-            ";
-	}
-} else {
-	echo "Server Prob";
-}
-?>
+            if ($con) {
+                if (isset($_POST['invoice_submit'])) {
+                    // Sanitize inputs
+                    $retainer = (int) $_POST['retainer'];
+                    $hearing = (int) $_POST['hearing'];
+                    $consult = (int) $_POST['consult'];
 
+                    $stmt = $con->prepare("INSERT INTO invoice (lawyer_id, retainer, hearing, consulting) VALUES (?, ?, ?, ?)");
+                    $stmt->bind_param("iiii", $_SESSION['lawyer_id'], $retainer, $hearing, $consult);
+                    $stmt->execute();
+                }
+
+                $stmt = $con->prepare("SELECT invoice_id FROM invoice WHERE lawyer_id = ?");
+                $id = (int) $_SESSION['lawyer_id'];
+                $stmt->bind_param('i', $id);
+                $stmt->execute();
+                $stmt->store_result();
+                $numRows = $stmt->num_rows;
+
+                if ($numRows == 0) {
+                    echo '
+                        <p>Please fill in details for your invoice layout</p>
+                        <form action="" method="post">
+                            <input type="number" placeholder="Retainer Fees" name="retainer" required>
+                            <input type="number" placeholder="Per Hearing Fees" name="hearing" required>
+                            <input type="number" placeholder="Consulting Fees" name="consult" required>
+                            <input type="submit" name="invoice_submit" value="Save">
+                        </form>';
+                } else {
+                    $stmt = $con->prepare("SELECT retainer, hearing, consulting FROM invoice WHERE lawyer_id = ?");
+                    $stmt->bind_param('i', $_SESSION['lawyer_id']);
+                    $stmt->execute();
+                    $stmt->store_result();
+                    $stmt->bind_result($retainer, $hearing, $consulting);
+                    $stmt->fetch();
+
+                    echo "
+                        <p class='invoice_info'>Retainer Fees: {$retainer}</p>
+                        <p class='invoice_info'>Per Hearing Fees: {$hearing}</p>
+                        <p class='invoice_info'>Consulting Fees: {$consulting}</p>
+                    ";
+                }
+            } else {
+                echo "Server Problem";
+            }
+            ?>
         </div>
     </div>
 </div>

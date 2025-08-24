@@ -1,6 +1,7 @@
 <?php
 
-$host = 'localhost';
+$host = '
+db.fr-pari1.bengt.wasmernet.com';
 $user = 'root';
 $pwd = '';
 $db = 'court_case_management';
@@ -8,7 +9,6 @@ $db = 'court_case_management';
 $con = new mysqli($host, $user, $pwd, $db);
 
 if ($con->connect_errno) {
-    die("Connection failed: " . $con->connect_error);
+    error_log("MySQLi Connection failed: " . $con->connect_error);
+    exit("Database connection failed.");
 }
-
-?>

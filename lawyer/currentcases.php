@@ -56,37 +56,45 @@
                         <th>Update</th>
                     </tr>
                     <?php
-require_once "includes/db.php";
-$con;
-if ($con) {
-	$x = 1;
-	$stmt = $con->prepare("SELECT case_id, case_type, case_details, next_hearing_date, prev_hearing_date, court_name FROM cases WHERE lawyer_id_assigned = ?");
-	$status = "pending";
-	$id = (int) $_SESSION['lawyer_id'];
-	$stmt->bind_param('i', $id);
-	$stmt->execute();
-	$stmt->store_result();
-	$stmt->bind_result($case_id, $case_type, $case_details, $next_hearing_date, $prev_hearing_date, $court_name);
+                    require_once "includes/db.php";
 
-	while ($stmt->fetch()) {
-		echo "
+                    if ($con) {
+                        $x = 1;
+                        $stmt = $con->prepare("SELECT case_id, case_type, case_details, prev_hearing_date, next_hearing_date, court_name 
+                                               FROM cases 
+                                               WHERE case_status = ? AND lawyer_id_assigned = ?");
+                        $status = "pending";
+                        $id = (int) $_SESSION['lawyer_id'];
+                        $stmt->bind_param('si', $status, $id);
+                        $stmt->execute();
+                        $stmt->store_result();
+                        $stmt->bind_result($case_id, $case_type, $case_details, $prev_hearing_date, $next_hearing_date, $court_name);
+
+                        if ($stmt->num_rows > 0) {
+                            while ($stmt->fetch()) {
+                                echo "
                                     <tr>
-                                        <td> {$x} </td>
-                                        <td> {$case_type} </td>
-                                        <td> {$case_details} </td>
-                                        <td> {$prev_hearing_date} </td>
-                                        <td> {$next_hearing_date} </td>
-                                        <td> Pending </td>
-                                        <td> {$court_name} </td>
-                                        <td><a class='btn btn-info' href='admin_dashboard.php?q=updatecase&id={$case_id}'> Update </button> </td>
-                                    </tr>
-                                    ";
-		$x++;
-	}
-} else {
-	echo "Server Prob";
-}
-?>
+                                        <td>{$x}</td>
+                                        <td>{$case_type}</td>
+                                        <td>{$case_details}</td>
+                                        <td>{$prev_hearing_date}</td>
+                                        <td>{$next_hearing_date}</td>
+                                        <td>Pending</td>
+                                        <td>{$court_name}</td>
+                                        <td><a class='btn btn-info btn-sm' href='lawyer_dashboard.php?q=updatecase&id={$case_id}'>Update</a></td>
+                                    </tr>";
+                                $x++;
+                            }
+                        } else {
+                            echo "
+                                <tr>
+                                    <td colspan='8' class='text-center'>No current cases assigned.</td>
+                                </tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='8'>Server Problem</td></tr>";
+                    }
+                    ?>
                 </table>
             </div>
         </div>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Court DBMS</title>
+    <title>Court MS</title>
     <link rel="stylesheet" href="public/css/carousel.css">
     <link rel="stylesheet" href="public/css/style.css">
     <script src="https://kit.fontawesome.com/2f7569df82.js" crossorigin="anonymous"></script>
@@ -37,7 +37,7 @@
         <div class="title-bar">
             <div id="item1">
                 <i class="fas fa-gavel fa-3x"></i>
-                <h1>Court Case Information System</h1>
+                <h1>Court Management System</h1>
             </div>
             <div id="item2">
                 <button class="sm" id="home-login-btn" onclick="location.href='#login'">Login</button>
@@ -183,24 +183,25 @@
             maxlength="250"></textarea>
 
         <div class="contact-submit">
-            <button class="submit-btn" value="Submit" name='contact_submit' onclick="redirect()">Submit</button>
+            <button class="submit-btn" value="Submit" name='contact_submit'>Submit</button>
+            <!-- onclick="redirect()" -->
         </div>
     </div>
 
     <script src="public/js/app.js"> </script>
-    <script>
-    function redirect() {
-        const fname = document.getElementById('fname').value;
-        const lname = document.getElementById('lname').value;
-        const email = document.getElementById('email').value;
-        const comments = document.getElementById('comments').value;
-        window.location.href =
-            "https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=dhananjay.shettigar2252000@gmail.com&su=Contact+by+" +
-            fname + "+" + lname +
-            "&body=" + comments + "&disablechatbrowsercheck=1";
+    <!-- <script>
+        function redirect() {
+            const fname = document.getElementById('fname').value;
+            const lname = document.getElementById('lname').value;
+            const email = document.getElementById('email').value;
+            const comments = document.getElementById('comments').value;
+            window.location.href =
+                "https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=dhananjay.shettigar2252000@gmail.com&su=Contact+by+" +
+                fname + "+" + lname +
+                "&body=" + comments + "&disablechatbrowsercheck=1";
 
-    }
-    </script>
+        }
+    </script> -->
 
     <script src="public/js/app.js"> </script>
 
